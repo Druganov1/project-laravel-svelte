@@ -21,18 +21,17 @@ class ProviderController extends Controller
     {
         /** @disregard Silence the stateless error, since it does work fine but its not recognized by intelliphense*/
         $socialUser = Socialite::driver($provider)->stateless()->user();
-        // Check if the user is in the Discord guild
-        $user = User::where('provider_id', $socialUser->id)->first();
+
+        $name = $provider == 'discord' ? $socialUser->user['global_name'] : $socialUser->name;
 
 
-        dd($socialUser);
         $user = User::updateOrCreate(
             [
                 'provider_id' => $socialUser->id, // Condition to check existing user
                 'provider' => $provider // It's often wise to include the provider in the check
             ],
             [
-                'name' => $socialUser->user["name"], // Data to update or create
+                'name' => $name, // Data to update or create
                 'email' => $socialUser->email,
                 'provider_token' => $socialUser->token,
                 'provider_refresh_token' => $socialUser->refreshToken
@@ -41,6 +40,7 @@ class ProviderController extends Controller
 
         $user->save();
         auth()->login($user);
+        return redirect(route('dashboard'));
 
 
 

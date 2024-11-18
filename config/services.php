@@ -22,7 +22,14 @@ return [
     'client_id' => env('GITHUB_CLIENT_ID'),
     'client_secret' => env('GITHUB_CLIENT_SECRET'),
     'redirect' => env('GITHUB_CALLBACK_URL'),
-],
+    ],
+
+    'discord' => [
+    'client_id' => env('DISCORD_CLIENT_ID'),
+    'client_secret' => env('DISCORD_CLIENT_SECRET'),
+    'redirect' => env('DISCORD_REDIRECT_URI'),
+
+    ],
 
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),

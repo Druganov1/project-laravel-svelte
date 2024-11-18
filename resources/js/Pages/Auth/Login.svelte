@@ -6,6 +6,7 @@
     import PrimaryButton from '@/Components/PrimaryButton.svelte';
     import TextInput from '@/Components/TextInput.svelte';
     import { inertia, useForm } from '@inertiajs/svelte';
+    import SocialLoginButton from '@/Components/SocialLoginButton.svelte';
 
     let {
         canResetPassword,
@@ -99,7 +100,14 @@
                 class="ms-4 {$form.processing && 'opacity-25'}"
                 disabled={$form.processing}>Log in</PrimaryButton
             >
-            <a href="/auth/github/redirect">Sign in with GitHub</a>
+
+        </div>
+        <div class="flex flex-col gap-1 mt-4">
+            <SocialLoginButton provider="github"></SocialLoginButton>
+            <SocialLoginButton provider="discord"></SocialLoginButton>
+
+
+
         </div>
     </form>
 </GuestLayout>
