@@ -4,6 +4,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Auth\ProviderController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -12,6 +15,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+
+Route::controller(ProviderController::class)->group(function () {
+    Route::get('/auth/{provider}/redirect', 'redirect');
+    Route::get('/auth/{provider}/callback', 'callback');
 });
 
 
