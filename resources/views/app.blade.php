@@ -15,7 +15,8 @@
         @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.svelte"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased {{ auth()->check() && auth()->user()->theme === 'dark' ? 'dark' : 'light' }}">
         @inertia
     </body>
+
 </html>

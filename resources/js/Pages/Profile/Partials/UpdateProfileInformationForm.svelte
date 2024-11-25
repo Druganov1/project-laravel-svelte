@@ -6,34 +6,38 @@
     import TextInput from '@/Components/TextInput.svelte';
     import { fade } from 'svelte/transition';
     import { cubicInOut } from 'svelte/easing';
+    import Title from '@/Components/Title.svelte';
+    import Subtitle from '@/Components/Subtitle.svelte';
 
     let {
         mustVerifyEmail,
         status,
     }: {
-        mustVerifyEmail?: boolean
-        status?: string
-    } = $props()
+        mustVerifyEmail?: boolean;
+        status?: string;
+    } = $props();
 
-    const user = $page.props.auth.user
+    const user = $page.props.auth.user;
     const form = useForm({
         name: user.name,
         email: user.email,
-    })
+    });
 
     function submit(e: SubmitEvent) {
-        e.preventDefault()
-        $form.patch(route('profile.update'))
+        e.preventDefault();
+        $form.patch(route('profile.update'));
     }
+
+    console.log(user);
 </script>
 
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+        <Title>Profile Information</Title>
 
-        <p class="mt-1 text-sm text-gray-600">
-            Update your account's profile information and email address.
-        </p>
+        <Subtitle
+            >Update your account's profile information and email address.</Subtitle
+        >
     </header>
 
     <form onsubmit={submit} class="mt-6 space-y-6">
@@ -43,7 +47,7 @@
             <TextInput
                 id="name"
                 type="text"
-                class="mt-1 block w-full"
+                class="block w-full mt-1"
                 bind:value={$form.name}
                 required
                 autofocus
@@ -58,11 +62,15 @@
 
             <TextInput
                 id="email"
+                disabled={user.provider ? true : false}
                 type="email"
-                class="mt-1 block w-full"
+                class={`block w-full mt-1 ${user.provider ? 'disabled bg-slate-200' : ''}`}
                 bind:value={$form.email}
                 required
                 autocomplete="username"
+                title={user.provider
+                    ? `Your account is linked to ${user.provider}, so you cannot change your email through our app.`
+                    : ''}
             />
 
             <InputError class="mt-2" message={$form.errors.email} />
@@ -72,8 +80,11 @@
             <p class="mt-2 text-sm text-gray-800">
                 Your email address is unverified.
                 <button
-                    use:inertia={{ href: route('verification.send'), method: 'post' }}
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    use:inertia={{
+                        href: route('verification.send'),
+                        method: 'post',
+                    }}
+                    class="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
                     Click here to re-send the verification email.
                 </button>
@@ -90,9 +101,11 @@
             <PrimaryButton disabled={$form.processing}>Save</PrimaryButton>
 
             {#if $form.recentlySuccessful}
-            <div transition:fade={{ easing: cubicInOut }}>
-                <p class="text-sm text-gray-600 transition ease-in-out">Saved.</p>
-            </div>
+                <div transition:fade={{ easing: cubicInOut }}>
+                    <p class="text-sm text-gray-600 transition ease-in-out">
+                        Saved.
+                    </p>
+                </div>
             {/if}
         </div>
     </form>

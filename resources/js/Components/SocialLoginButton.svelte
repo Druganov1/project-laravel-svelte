@@ -1,5 +1,4 @@
-<script>
-
+<script lang="ts">
     import Icon from '@iconify/svelte';
     export let provider;
 
@@ -15,6 +14,11 @@
     $: buttonColorClass = providerColors[provider] || 'bg-black'; // Default to black if provider is not found
 </script>
 
-<a href={`/auth/${provider}/redirect`} class={`social-button ${buttonColorClass} text-white py-2 px-4 rounded flex justify-center items-center gap-2`}>
-    <Icon class="size-7" icon={`mdi:${provider}`} />Sign in with {provider.charAt(0).toUpperCase() + provider.slice(1)}
+<a
+    href={`/auth/${provider}/redirect`}
+    class={`social-button ${buttonColorClass} text-white py-2 px-4 rounded flex justify-center items-center gap-2`}
+>
+    <Icon class="size-7" icon={`mdi:${provider}`} />Sign in with {provider
+        .charAt(0)
+        .toUpperCase() + provider.slice(1)}
 </a>
