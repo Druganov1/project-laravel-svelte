@@ -5,6 +5,7 @@ export interface User {
     email_verified_at?: string;
     provider: string;
     theme: string;
+    profile_pic_b64?: string;
 }
 
 export type PageProps<
