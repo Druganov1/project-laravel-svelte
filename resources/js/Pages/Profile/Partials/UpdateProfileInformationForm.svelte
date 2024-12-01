@@ -16,6 +16,7 @@
 
     let confirmingProfilePicDeletion  = $state(false);
     let selectedFile: File | null = null;
+    let profilePicError = $state(null);
 
     let {
         mustVerifyEmail,
@@ -68,6 +69,7 @@
 function handleFileChange(event) {
     const input = event.target;
     if (input && input.files?.length > 0) {
+        profilePicError = null;
         const file = input.files[0]; // Get the selected file
         console.log("File selected:", file);
 
@@ -81,6 +83,7 @@ function handleFileChange(event) {
                 console.log('Profile picture uploaded successfully');
             })
             .catch((error) => {
+                profilePicError = error.response.data.errors.profile_pic;
                 console.error('Failed to upload profile picture', error.response?.data || error);
             });
     } else {
@@ -176,6 +179,11 @@ function handleFileChange(event) {
       </div>
         {/snippet}
     </Dropdown>
+    <div class="mt-2">
+        {#each profilePicError as error}
+            <InputError class="mt-2" message={error} />
+        {/each}
+    </div>
 
 
     </div>

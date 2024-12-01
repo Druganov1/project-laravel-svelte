@@ -4,6 +4,9 @@
     import UpdatePasswordForm from './Partials/UpdatePasswordForm.svelte';
     import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.svelte';
     import UpdateTheme from './Partials/UpdateTheme.svelte';
+    import { page } from '@inertiajs/svelte';
+    import ExtraLogs from './Partials/ExtraLogs.svelte';
+
 
     let {
         mustVerifyEmail,
@@ -12,6 +15,9 @@
         mustVerifyEmail?: boolean;
         status?: string;
     } = $props();
+
+    const user = $page.props.auth.user;
+
 </script>
 
 <svelte:head>
@@ -44,16 +50,28 @@
                     class="max-w-xl"
                 />
             </div>
+
+            {#if user.provider === null || user.provider === '' }
+
             <div
                 class="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg sm:p-8"
             >
                 <UpdatePasswordForm class="max-w-xl" />
             </div>
+
+            {/if}
             <div
                 class="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg sm:p-8"
             >
                 <DeleteUserForm class="max-w-xl" />
             </div>
+
+
+            <div
+            class="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg sm:p-8"
+        >
+            <ExtraLogs class="max-w-xl" />
+        </div>
         </div>
     </div>
 </AuthenticatedLayout>
