@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Auth\ProviderController;
+use App\Http\Controllers\ChatBotController;
 
 
 Route::get('/', function () {
@@ -30,9 +31,6 @@ Route::get('/helloworld', function () {
 
 
 
-Route::get('/help', function () {
-    return Inertia::render('Help');
-})->name('help');
 
 
 
@@ -46,6 +44,8 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
 Route::middleware('auth')->group(function () {
     Route::patch('/theme', action: [ProfileController::class, 'updateTheme'])->name('profile.updateTheme');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,6 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profilepicture', [ProfileController::class, 'destroyPic'])->name('profile.deletepic');
     Route::post('/profilepicture', [ProfileController::class, 'upload'])->name('profile.uploadpic');
+    Route::get('/help', action: [ChatBotController::class, 'index'])->name('help.index');
+
+    Route::prefix('api')->group(function () {
+        Route::post('/chat', action: [ChatbotController::class, 'sendChat'])->name('api.sendChat');
+
+    });
+
 
 });
 
